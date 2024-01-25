@@ -8,6 +8,7 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
   useEffect(() => {
     const auth = localStorage.getItem("user");
@@ -15,6 +16,10 @@ const Signup = () => {
       navigate("/");
     }
   }, [navigate]);
+
+  useEffect(() => {
+    setIsButtonDisabled(!(name && email && password));
+  }, [name, email, password]);
 
   const collectData = async () => {
     try {
@@ -69,6 +74,7 @@ const Signup = () => {
               setName(e.target.value);
             }}
             className="form-control mb-3"
+            required
           />
           <input
             type="text"
@@ -78,6 +84,7 @@ const Signup = () => {
               setEmail(e.target.value);
             }}
             className="form-control mb-3"
+            required
           />
           <input
             type="password"
@@ -87,12 +94,14 @@ const Signup = () => {
               setPassword(e.target.value);
             }}
             className="form-control mb-4"
+            required
           />
         </div>
         <button
           type="button"
           onClick={collectData}
           className="btn btn-dark btn-lg"
+          disabled={isButtonDisabled}
         >
           Sign Up
         </button>

@@ -3,9 +3,20 @@ import { Link, useNavigate } from "react-router-dom";
 const Navbar = () => {
   const auth = localStorage.getItem("user");
   const navigate = useNavigate();
+
   const logout = () => {
     localStorage.clear();
     navigate("/signup");
+  };
+
+  const getUserName = () => {
+    try {
+      const user = JSON.parse(auth);
+      return user.name;
+    } catch (error) {
+      console.error("Error parsing user data:", error);
+      return "";
+    }
   };
 
   return (
@@ -24,7 +35,7 @@ const Navbar = () => {
           </li>
           <li className="nav-item">
             <Link to="/signup" className="nav-link" onClick={logout}>
-              Logout ({JSON.parse(auth).name})
+              Logout ({getUserName()})
             </Link>
           </li>
         </ul>
