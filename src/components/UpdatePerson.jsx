@@ -13,7 +13,7 @@ const UpdatePerson = () => {
   const params = useParams();
   const navigate = useNavigate();
 
-  const baseURL = "http://localhost:5000/api/person/person/";
+  const baseURL = "https://theitstudio-backend.onrender.com/api/person/person/";
 
   useEffect(() => {
     getPersonDetail();
