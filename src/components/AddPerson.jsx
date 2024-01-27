@@ -1,5 +1,7 @@
 import { useState } from "react";
-import Swal from "sweetalert2"
+import Swal from "sweetalert2";
+
+const API_BASE_URL = "https://theitstudio-backend.onrender.com/api/person";
 
 const AddPerson = () => {
   const [name, setName] = useState("");
@@ -15,25 +17,20 @@ const AddPerson = () => {
     }
 
     try {
-      const result = await fetch(
-        "https://theitstudio-backend.onrender.com/api/person/add-person",
-        {
-          method: "post",
-          body: JSON.stringify({
-            name,
-            phoneNumber,
-            email,
-            hobbies,
-          }),
-          headers: {
-            "Content-Type": "application/json",
-            authorization: `bearer ${JSON.parse(localStorage.getItem("token"))}`,
-          },
-        }
-      );
+      const result = await fetch(`${API_BASE_URL}/add-person`, {
+        method: "post",
+        body: JSON.stringify({
+          name,
+          phoneNumber,
+          email,
+          hobbies,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       const response = await result.json();
-      console.log(response);
 
       if (result.ok) {
         setName("");
@@ -51,7 +48,8 @@ const AddPerson = () => {
         });
       } else {
         setError(true);
-        const errorMessage = response.message || "An error occurred while adding the person.";
+        const errorMessage =
+          response.message || "An error occurred while adding the person.";
         console.error(errorMessage);
 
         Swal.fire({
@@ -70,7 +68,7 @@ const AddPerson = () => {
         icon: "error",
       });
     }
-  }
+  };
 
   return (
     <div className="container">

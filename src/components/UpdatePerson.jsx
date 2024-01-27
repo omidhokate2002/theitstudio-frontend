@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
@@ -14,7 +13,7 @@ const UpdatePerson = () => {
   const params = useParams();
   const navigate = useNavigate();
 
-  const baseURL = "https://theitstudio-backend.onrender.com/api/person/person/";
+  const baseURL = "http://localhost:5000/api/person/person/";
 
   useEffect(() => {
     getPersonDetail();
@@ -23,14 +22,7 @@ const UpdatePerson = () => {
   const getPersonDetail = async () => {
     try {
       setLoading(true);
-      const response = await fetch(
-        `${baseURL}${params.id}`,
-        {
-          headers: {
-            authorization: `bearer ${JSON.parse(localStorage.getItem("token"))}`,
-          },
-        }
-      );
+      const response = await fetch(`${baseURL}${params.id}`);
 
       if (response.ok) {
         const result = await response.json();
@@ -52,17 +44,13 @@ const UpdatePerson = () => {
 
   const updatePerson = async () => {
     try {
-      const response = await fetch(
-        `${baseURL}${params.id}`,
-        {
-          method: "PUT",
-          body: JSON.stringify({ name, phoneNumber, email, hobbies }),
-          headers: {
-            "Content-Type": "application/json",
-            authorization: `bearer ${JSON.parse(localStorage.getItem("token"))}`,
-          },
-        }
-      );
+      const response = await fetch(`${baseURL}${params.id}`, {
+        method: "PUT",
+        body: JSON.stringify({ name, phoneNumber, email, hobbies }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       if (response.ok) {
         Swal.fire({
@@ -82,21 +70,24 @@ const UpdatePerson = () => {
   };
 
   if (loading) {
-    return <div className="d-flex align-items-center justify-content-center" style={{ height: "60vh" }}>
-      <p id="loading-message" className="text-center">
-        Loading...
-      </p>
-    </div>
+    return (
+      <div className="d-flex align-items-center justify-content-center" style={{ height: "60vh" }}>
+        <p id="loading-message" className="text-center">
+          Loading...
+        </p>
+      </div>
+    );
   }
 
   if (error) {
-    return <div className="d-flex align-items-center justify-content-center" style={{ height: "60vh" }}>
-      <p id="loading-message" className="text-center">
-        Error loading person details.
-      </p>
-    </div>
+    return (
+      <div className="d-flex align-items-center justify-content-center" style={{ height: "60vh" }}>
+        <p id="loading-message" className="text-center">
+          Error loading person details.
+        </p>
+      </div>
+    );
   }
-
 
   return (
     <div className="container">
@@ -110,8 +101,7 @@ const UpdatePerson = () => {
               <div className="mb-3">
                 <input
                   type="text"
-                  className={`form-control ${error && !name ? "is-invalid" : ""
-                    }`}
+                  className={`form-control ${error && !name ? "is-invalid" : ""}`}
                   placeholder="Person Name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -120,8 +110,7 @@ const UpdatePerson = () => {
               <div className="mb-3">
                 <input
                   type="number"
-                  className={`form-control ${error && !phoneNumber ? "is-invalid" : ""
-                    }`}
+                  className={`form-control ${error && !phoneNumber ? "is-invalid" : ""}`}
                   placeholder="Phone Number"
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
@@ -130,8 +119,7 @@ const UpdatePerson = () => {
               <div className="mb-3">
                 <input
                   type="text"
-                  className={`form-control ${error && !email ? "is-invalid" : ""
-                    }`}
+                  className={`form-control ${error && !email ? "is-invalid" : ""}`}
                   placeholder="Email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
@@ -140,8 +128,7 @@ const UpdatePerson = () => {
               <div className="mb-3">
                 <input
                   type="text"
-                  className={`form-control ${error && !hobbies ? "is-invalid" : ""
-                    }`}
+                  className={`form-control ${error && !hobbies ? "is-invalid" : ""}`}
                   placeholder="Hobbies"
                   value={hobbies}
                   onChange={(e) => setHobbies(e.target.value)}

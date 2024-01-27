@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 
-const API_BASE_URL = "https://theitstudio-backend.onrender.com/api/person";
+const API_BASE_URL = "http://localhost:5000/api/person";
 
 const PeopleComponent = () => {
   const [people, setPeople] = useState([]);
@@ -14,11 +14,7 @@ const PeopleComponent = () => {
 
   const getPeople = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/people`, {
-        headers: {
-          authorization: `bearer ${JSON.parse(localStorage.getItem("token"))}`,
-        },
-      });
+      const response = await fetch(`${API_BASE_URL}/people`);
       const data = await response.json();
       setPeople(data);
     } catch (error) {
@@ -36,9 +32,6 @@ const PeopleComponent = () => {
     try {
       const response = await fetch(`${API_BASE_URL}/person/${id}`, {
         method: "DELETE",
-        headers: {
-          authorization: `bearer ${JSON.parse(localStorage.getItem("token"))}`,
-        },
       });
 
       if (response.ok) {
@@ -73,28 +66,12 @@ const PeopleComponent = () => {
     const key = event.target.value;
     if (key) {
       try {
-        const response = await fetch(`${API_BASE_URL}/search/${key}`, {
-          headers: {
-            authorization: `bearer ${JSON.parse(localStorage.getItem("token"))}`,
-          },
-        });
+        const response = await fetch(`${API_BASE_URL}/search/${key}`);
         const result = await response.json();
         if (response.ok) {
           setPeople(result);
-
-          Swal.fire({
-            title: "Success!",
-            text: "Search successful",
-            icon: "success",
-          });
         } else {
           console.error("Error searching person:", response.status);
-
-          Swal.fire({
-            title: "Error!",
-            text: "An error occurred while searching for people.",
-            icon: "error",
-          });
         }
       } catch (error) {
         console.error("Error searching person:", error);
@@ -152,7 +129,6 @@ const PeopleComponent = () => {
       console.error("Error sending email:", error);
     }
   };
-
 
   return (
     <div className="container">
