@@ -6,6 +6,11 @@ const Navbar = () => {
       <ul className="navbar-nav">
         <li className="nav-item">
           <Link to="/" className="nav-link">
+            TheItStudio
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link to="/" className="nav-link">
             People
           </Link>
         </li>
@@ -14,10 +19,7 @@ const Navbar = () => {
             Add Person
           </Link>
         </li>
-        {/* Add any other navigation items as needed */}
       </ul>
-      {/* Add your heading here */}
-      <h1 className="navbar-heading">Your Heading</h1>
     </nav>
   );
 };
