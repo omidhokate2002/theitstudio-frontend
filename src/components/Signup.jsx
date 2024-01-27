@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
-
 const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -18,34 +17,48 @@ const Signup = () => {
   }, [navigate]);
 
   useEffect(() => {
-    setIsButtonDisabled(!(name && email && password));
+    setIsButtonDisabled(!(name && isValidEmail(email) && password));
   }, [name, email, password]);
+
+  const isValidEmail = (value) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(value);
+  };
+
 
   const collectData = async () => {
     try {
-      let result = await fetch(
-        "https://theitstudio-backend.onrender.com/api/user/register",
-        {
-          method: "post",
-          body: JSON.stringify({ name, email, password }),
-          headers: { "Content-Type": "application/json" },
+      if (isValidEmail(email) && password) {
+        let result = await fetch(
+          "https://theitstudio-backend.onrender.com/api/user/register",
+          {
+            method: "post",
+            body: JSON.stringify({ name, email, password }),
+            headers: { "Content-Type": "application/json" },
+          }
+        );
+
+        result = await result.json();
+
+        localStorage.setItem("user", JSON.stringify(result));
+
+        if (result) {
+          localStorage.setItem("user", JSON.stringify(result.result));
+          localStorage.setItem("token", JSON.stringify(result.auth));
+
+          Swal.fire({
+            title: "Success!",
+            text: "Registration successful",
+            icon: "success",
+          }).then(() => {
+            navigate("/");
+          });
         }
-      );
-
-      result = await result.json();
-
-      localStorage.setItem("user", JSON.stringify(result));
-
-      if (result) {
-        localStorage.setItem("user", JSON.stringify(result.result));
-        localStorage.setItem("token", JSON.stringify(result.auth));
-
+      } else {
         Swal.fire({
-          title: "Success!",
-          text: "Registration successful",
-          icon: "success",
-        }).then(() => {
-          navigate("/");
+          title: "Error!",
+          text: "Invalid email or password format.",
+          icon: "error",
         });
       }
     } catch (error) {
