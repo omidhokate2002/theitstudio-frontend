@@ -1,7 +1,7 @@
 import { useState } from "react";
 import Swal from "sweetalert2";
 
-const API_BASE_URL = "https://theitstudio-backend.onrender.com/api/person";
+const API_BASE_URL = "https://theitstudio-backend-02.onrender.com/api/person";
 
 const AddPerson = () => {
   const [name, setName] = useState("");

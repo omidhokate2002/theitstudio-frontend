@@ -17,7 +17,6 @@ function App() {
           <Route path="/" element={<PeopleComponent />} />
           <Route path="/add" element={<AddPerson />} />
           <Route path="/update/:id" element={<UpdatePerson />} />
-          <Route path="/logout" element={<h3>Logout</h3>} />
         </Routes>
       </div>
     </div >
